@@ -1,4 +1,4 @@
-IMAGE_NAME = leeread/quick-gitweb
+IMAGE_NAME = leeread/gitweb-quick
 
 VERSION_MAJOR = 1
 VERSION_MINOR = 0

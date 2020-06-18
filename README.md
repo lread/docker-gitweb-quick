@@ -20,7 +20,7 @@ In a nutshell:
 
 Example docker run command:
 ```
-docker run --rm -d --name quick-gitweb -p 3000:1234 -v $(pwd):/repo:ro leeread/quick-gitweb:latest
+docker run --rm -d --name gitweb-quick -p 3000:1234 -v $(pwd):/repo:ro leeread/gitweb-quick:latest
 ```
 
 ## Building
