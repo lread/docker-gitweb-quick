@@ -17,6 +17,6 @@ image:
 	docker tag $(TAG) $(IMAGE_NAME):latest
 
 # try out a build interactively
-# override REPO_DIR via: make test TEST_REPO_DIR=/your/path/to/repo
+# override TEST_REPO_DIR via: make test TEST_REPO_DIR=/your/path/to/repo
 test:
 	docker run --rm -i -t -p $(TEST_PORT):1234 -v $(realpath $(TEST_REPO_DIR)):/repo:ro $(TAG)
