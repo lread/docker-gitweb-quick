@@ -1,0 +1,20 @@
+version: 2.1
+jobs:
+  build:
+    filters:
+      branches:
+        only:
+          - master
+    docker:
+      - image: circleci/golang:1.14
+    steps:
+      - checkout
+
+      - setup_remote_docker:
+          docker_layer_caching: true
+
+      - run: |
+          make image
+          make git-tag
+          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+          make release
