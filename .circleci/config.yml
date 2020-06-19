@@ -5,6 +5,10 @@ jobs:
     docker:
       - image: circleci/golang:1.14
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "4c:49:12:b3:5f:94:d0:0c:ae:62:3e:d8:67:6b:15:d2"
+
       - checkout
 
       - setup_remote_docker
@@ -21,7 +25,7 @@ jobs:
           name: Push docker image to docker hub
           command: |
               echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-               make release
+              make release
 
 workflows:
   version: 2

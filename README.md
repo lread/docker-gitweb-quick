@@ -23,7 +23,9 @@ Example docker run command:
 docker run --rm -d --name gitweb-quick -p 3000:1234 -v $(pwd):/repo:ro leeread/gitweb-quick:latest
 ```
 
-## Building
+## Developer Notes
+
+### Building
 
 If you want to build the docker image, clone the repo from github and:
 ```
@@ -41,14 +43,26 @@ make test
 
 After launch open http://localhost:3000/?p=.git in your web browser.
 
-## Publishing
-
-See circleci config.
-
-## Version Scheme
+### Version Scheme
 
 major.minor.patch where:
 
 - major will likely stay at 1
 - minor will likely stay at 0, but might increment for a significant change
 - patch is the git commit count 
+
+### Publishing
+
+On every push to this GitHub repo, CircleCI will:
+
+1. Build the docker image
+2. Version tag this GitHub repo
+3. Push the docker image to docker hub
+
+There was some setup required at CircleCI: 
+
+- To push to docker hub, added DOCKER_USER and DOCKER_PASS environment variables.
+- To be able to tag github repo, had [to give CircleCI write privs to this repo](https://circleci.com/docs/2.0/gh-bb-integration/#creating-a-github-deploy-key).
+
+See circleci config.
+
