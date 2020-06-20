@@ -33,8 +33,9 @@ target:
 # Grab highlight config from a docker alpine image
 target/filetypes.conf: target
 	$(call status_line,Fetching highlight filetypes config)
-	docker run -i -t -v $(realpath $(PROJECT_DIR))/target:/target:rw alpine \
-         /bin/sh -c "apk add highlight; cp /etc/highlight/filetypes.conf /target"
+	docker run -i -t -d --rm --name alpine-love alpine /bin/sh -c "apk add highlight;cat"
+	script/docker-cp.sh alpine-love:/etc/highlight/filetypes.conf target
+	docker stop alpine-love --time 0
 
 highlight-filetypes-config: target/filetypes.conf
 
@@ -52,9 +53,11 @@ gitweb-config: target/image-files/etc/gitweb/gitweb_config.perl
 # Grab a better syntax highlight css - because the default was disappointing
 target/image-files/usr/share/gitweb/static/highlight.css: target
 	$(call status_line,Generating highlight style stylesheet: $(HIGHLIGHT_STYLE))
+	docker run -i -t -d --rm --name alpine-love alpine \
+         /bin/sh -c "apk add highlight; touch dummy.txt; highlight -i dummy.txt -o dummy.out --style=$(HIGHLIGHT_STYLE);cat"
 	mkdir -p target/image-files/usr/share/gitweb/static
-	docker run -i -t -v $(realpath $(PROJECT_DIR))/target:/target:rw alpine \
-         /bin/sh -c "apk add highlight; touch dummy.txt; highlight -i dummy.txt -o dummy.out --style=$(HIGHLIGHT_STYLE); cp highlight.css /target/image-files/usr/share/gitweb/static"
+	script/docker-cp.sh alpine-love:highlight.css target/image-files/usr/share/gitweb/static
+	docker stop alpine-love --time 0
 
 gitweb-highlight-css: target/image-files/usr/share/gitweb/static/highlight.css
 
