@@ -23,7 +23,24 @@ Example docker run command:
 docker run --rm -d --name gitweb-quick -p 3000:1234 -v $(pwd):/repo:ro leeread/gitweb-quick:latest
 ```
 
+## Minor Bonuses
+
+- gitweb highlight config - The default gitweb highlighting configuration is minimal, this docker image transcribes all available
+filename and filename extension mapping config from the highlight app to gitweb config.
+
+- gitweb highlight styling - The highlight gitweb styling also seemed a bit off, a fresh css from the highlight app is 
+generated and applied to gitweb.
+
 ## Developer Notes
+
+### Prerequisites
+
+You'll need the following installed if you want build the docker image yourself:
+- docker
+- make
+- Clojure
+
+Note that all development was done on macOS, but I expect linux would also work out just fine.
 
 ### Building
 
@@ -40,6 +57,8 @@ Or to sanity test against current dir:
 ```
 make test
 ```
+
+If you want to bring up a shell instead of the server, replace `test` with `interact`.
 
 After launch open http://localhost:3000/?p=.git in your web browser.
 

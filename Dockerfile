@@ -9,8 +9,8 @@ RUN apk add --no-cache \
   lighttpd \
   perl-cgi
 
-COPY entrypoint.sh /usr/local/bin/
-COPY etc /etc
+COPY image-files /
+COPY target/image-files /
 
 VOLUME /repo
 WORKDIR /repo
