@@ -33,7 +33,7 @@ target:
 # Grab highlight config from a docker alpine image
 target/filetypes.conf: target
 	$(call status_line,Fetching highlight filetypes config)
-	docker run -i -t -v $(realpath $(PROJECT_DIR))/target:/target alpine \
+	docker run -i -t -v $(realpath $(PROJECT_DIR))/target:/target:rw alpine \
          /bin/sh -c "apk add highlight; cp /etc/highlight/filetypes.conf /target"
 
 highlight-filetypes-config: target/filetypes.conf
@@ -53,7 +53,7 @@ gitweb-config: target/image-files/etc/gitweb/gitweb_config.perl
 target/image-files/usr/share/gitweb/static/highlight.css: target
 	$(call status_line,Generating highlight style stylesheet: $(HIGHLIGHT_STYLE))
 	mkdir -p target/image-files/usr/share/gitweb/static
-	docker run -i -t -v $(realpath $(PROJECT_DIR))/target:/target alpine \
+	docker run -i -t -v $(realpath $(PROJECT_DIR))/target:/target:rw alpine \
          /bin/sh -c "apk add highlight; touch dummy.txt; highlight -i dummy.txt -o dummy.out --style=$(HIGHLIGHT_STYLE); cp highlight.css /target/image-files/usr/share/gitweb/static"
 
 gitweb-highlight-css: target/image-files/usr/share/gitweb/static/highlight.css
