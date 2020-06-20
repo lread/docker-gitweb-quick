@@ -51,8 +51,8 @@ gitweb-config: target/image-files/etc/gitweb/gitweb_config.perl
 
 # Grab a better syntax highlight css - because the default was disappointing
 target/image-files/usr/share/gitweb/static/highlight.css: target
-	$(call status_line,Generating highlight style: $(HIGHLIGHT_STYLE))
-	mkdir -p target/image-files/usr/share/gitweb
+	$(call status_line,Generating highlight style stylesheet: $(HIGHLIGHT_STYLE))
+	mkdir -p target/image-files/usr/share/gitweb/static
 	docker run -i -t -v $(realpath $(PROJECT_DIR))/target:/target alpine \
          /bin/sh -c "apk add highlight; touch dummy.txt; highlight -i dummy.txt -o dummy.out --style=$(HIGHLIGHT_STYLE); cp highlight.css /target/image-files/usr/share/gitweb/static"
 
@@ -69,7 +69,7 @@ image: gitweb-highlight-css gitweb-config
 test:
 	$(call status_line,Firing up interactive test for image $(TAG))
 	$(call status_line,- against repo in $(realpath $(TEST_REPO_DIR)))
-	$(call status_line,"- view in your browser at http://localhost:$(TEST_PORT)/?p=.git")
+	$(call status_line,- view in your browser at http://localhost:$(TEST_PORT)/?p=.git)
 	docker run --rm -i -t -p $(TEST_PORT):1234 -v $(realpath $(TEST_REPO_DIR)):/repo:ro $(TAG)
 
 # Interact with built image by logging into shell
